@@ -3,10 +3,12 @@ package com.labbooking.lbsys.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
     private long id;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
