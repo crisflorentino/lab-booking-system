@@ -22,4 +22,9 @@ public class UserController {
     public List<User> getAllUsers() {
         return uRepo.findAll();
     }
+
+    @GetMapping("/{id}")
+    public Optional<User> getById(@PathVariable Long id) {
+        return uRepo.findById(id);
+    }
 }
