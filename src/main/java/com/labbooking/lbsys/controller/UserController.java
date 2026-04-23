@@ -18,13 +18,30 @@ public class UserController {
         this.uRepo = uRepo;
     }
 
+    // Returns a list of all the user objects within the database
     @GetMapping
     public List<User> getAllUsers() {
         return uRepo.findAll();
     }
 
+    // Returns a specific user based on the ID provided.
     @GetMapping("/{id}")
     public Optional<User> getById(@PathVariable Long id) {
         return uRepo.findById(id);
+    }
+
+    // Creates and saves a new user object to the database. 
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return uRepo.save(user);
+    }
+
+    // Deletes a specific user from the database based on the ID provided.
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        // Should probably throw something if the ID just doesn't exist but I'll do that another time.
+        if (uRepo.existsById(id)) {
+            uRepo.deleteById(id);
+        }
     }
 }
