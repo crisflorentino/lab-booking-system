@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    private long id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private Role role;
