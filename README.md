@@ -6,20 +6,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 </div>
 
----
-## Spring Boot
-This project utilizes the Spring framework. I am personally still learning it, but try to familiarize yourelf with it. It follows a layered architecture. Make sure code is placed in the correct packages.
-
-* **`model`**: Database entities and Enums.
-* **`repository`**: JPA interfaces for database access.
-* **`service`**: Business logic and validation.
-* **`controller`**: REST API endpoints (Mappings).
-
----
-
 ## PostgreSQL
-
-**PostgreSQL** is required on your device to run this project properly.
 
 1. Ensure PostgreSQL is installed and running, you can probably find a tutorial online.
 2. Create a local database named `lab_booking_db`.
@@ -31,11 +18,25 @@ This project utilizes the Spring framework. I am personally still learning it, b
 
 ## Branching & Workflow
 
-Try not to make changes on the `main` branch to keep things stable, please work on feature branches. Use the following naming techniques when creating new branches:
-
 ### Branch Categories
 * **`feature/`**: New functional requirements (e.g., `feature/user-login`).
 * **`bugfix/`**: Fixing a bug or broken logic (e.g., `bugfix/connection-timeout`).
 * **`chore/`**: Maintenance tasks, documentation, or dependency updates (e.g., `chore/update-readme`).
 * **`refactor/`**: Code changes that neither fix a bug nor add a feature (e.g., `refactor/booking-logic`).
+---
+
+##  Project Roadmap
+
+### Phase 1: API Controllers (The Gateways)
+- [x] **UserController**: Build enpoints to handle user data.
+- [ ] **EquipmentController**: Build endpoints to fetch all equipment and filter by availability.
+- [ ] **BookingController**: Build endpoints to handle new reservations and view schedules.
+
+### Phase 2: Service Layer (The Business Logic)
+- [ ] **UserService**: Abstract data fetching logic away from the controller.
+- [ ] **EquipmentService**: Add logic for status updates (e.g., switching from AVAILABLE to IN_USE).
+- [ ] **BookingService**: Implement the core logic to prevent double-booking and time-slot conflicts.
+
+### Phase 3: Frontend Development & Integration
+- [ ] Implement some sort of frontend.
 
