@@ -19,9 +19,9 @@ public class EquipmentService {
 
     public Equipment addEquipment(Equipment newEquipment) {
 
-        // If no status is provided, make the status automatically available.
+        // If no status is provided, make the status automatically maintenance.
         if (newEquipment.getStatus() == null) {
-            newEquipment.setStatus(Status.AVAILABLE);
+            newEquipment.setStatus(Status.MAINTENANCE);
         }
 
         return eRepo.save(newEquipment);
