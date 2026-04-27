@@ -2,6 +2,7 @@ package com.labbooking.lbsys.controller;
 
 import com.labbooking.lbsys.model.User;
 import com.labbooking.lbsys.repository.UserRepository;
+import com.labbooking.lbsys.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,37 +17,33 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    // This is temporary, later we will move this to a service class.
-    private final UserRepository uRepo;
 
-    public UserController(UserRepository uRepo) {
-        this.uRepo = uRepo;
+    private final UserService uService;
+    public UserController(UserService uService) {
+        this.uService = uService;
     }
 
     // Returns a list of all the user objects within the database
     @GetMapping
     public List<User> getAllUsers() {
-        return uRepo.findAll();
+        return uService.getAllUsers();
     }
 
     // Returns a specific user based on the ID provided.
     @GetMapping("/{id}")
     public Optional<User> getById(@PathVariable Long id) {
-        return uRepo.findById(id);
+        return Optional.ofNullable(uService.getById(id));
     }
 
     // Creates and saves a new user object to the database. 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return uRepo.save(user);
+        return uService.createUser(user);
     }
 
     // Deletes a specific user from the database based on the ID provided.
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        // Should probably throw something if the ID just doesn't exist but I'll do that another time.
-        if (uRepo.existsById(id)) {
-            uRepo.deleteById(id);
-        }
+        uService.deleteUser(id);
     }
 }
