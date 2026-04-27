@@ -62,4 +62,8 @@ public class EquipmentService {
 
         eRepo.deleteById(id);
     }
+
+    public List<Equipment> getEquipmentByStatus(Status status) {
+        return eRepo.findByStatus(status);
+    }
 }
