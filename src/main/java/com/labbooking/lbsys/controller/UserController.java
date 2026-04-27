@@ -1,7 +1,6 @@
 package com.labbooking.lbsys.controller;
 
 import com.labbooking.lbsys.model.User;
-import com.labbooking.lbsys.repository.UserRepository;
 import com.labbooking.lbsys.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
