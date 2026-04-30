@@ -8,9 +8,8 @@
 
 
 ### Branch Categories
-* **`feature/`**: New functional requirements.
-* **`bugfix/`**: Fixing a bug or broken logic.
-* **`chore/`**: Maintenance tasks, documentation, or dependency updates.
-* **`refactor/`**: Code changes that neither fix a bug nor add a feature.
-
+* **`feature/`**
+* **`bugfix/`**
+* **`chore/`**
+* **`refactor/`**
 
