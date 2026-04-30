@@ -44,7 +44,7 @@ public class EquipmentService {
         Optional<Equipment> existingEquipment = eRepo.findById(id);
 
         if (existingEquipment.isEmpty()) {
-            throw new RuntimeException("Equipment update failed: ID " + id + " does not exist.");
+            throw new RuntimeException("Equipment fetch failed: ID " + id + " does not exist.");
         }
 
         return existingEquipment.get();
