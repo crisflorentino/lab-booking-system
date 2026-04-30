@@ -1,5 +1,12 @@
 package com.labbooking.lbsys;
 
+import com.labbooking.lbsys.model.Equipment;
+import com.labbooking.lbsys.model.Role;
+import com.labbooking.lbsys.model.Status;
+import com.labbooking.lbsys.model.User;
+import com.labbooking.lbsys.repository.EquipmentRepository;
+import com.labbooking.lbsys.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
@@ -23,6 +30,39 @@ public class LabBookingSystemApplication {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+            }
+        };
+    }
+
+    // Database Seeder
+    @Bean
+    public CommandLineRunner seedDatabase(UserRepository userRepository, EquipmentRepository equipmentRepository) {
+        return args -> {
+            if (userRepository.count() == 0) {
+                userRepository.save(new User(987654321L, Role.USER));
+                userRepository.save(new User(111222333L, Role.USER));
+            }
+
+            if (equipmentRepository.count() == 0) {
+                Equipment eq1 = new Equipment();
+                eq1.setName("Lab Equipment 1");
+                eq1.setStatus(Status.AVAILABLE);
+                equipmentRepository.save(eq1);
+
+                Equipment eq2 = new Equipment();
+                eq2.setName("Lab Equipment 2");
+                eq2.setStatus(Status.AVAILABLE);
+                equipmentRepository.save(eq2);
+
+                Equipment eq3 = new Equipment();
+                eq3.setName("Lab Equipment 3");
+                eq3.setStatus(Status.MAINTENANCE);
+                equipmentRepository.save(eq3);
+
+                Equipment eq4 = new Equipment();
+                eq4.setName("Lab Equipment 4");
+                eq4.setStatus(Status.AVAILABLE);
+                equipmentRepository.save(eq4);
             }
         };
     }
