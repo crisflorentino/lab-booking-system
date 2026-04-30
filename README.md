@@ -7,6 +7,8 @@
 </div>
 
 A resource reservation system that allows students to book lab hardware remotely. Constructed for **SUNY New Paltz SWE Class '26**.
+
+Currently acting as a demo, this is a scaleable **Java-based REST API** and **database architecture** serving as a lightweight client to visualize student bookings. It features a robust collection of already established exposed endpoints prepared to support features such as a fully fledged administrative dashboard for inventory and user management. 
 ###### Note: The focus of this project is to showcase my backend capabilities utilizing the Spring Framework. As a result, the frontend dashboard serves as a demo client and a visualization tool for the REST API and thus was not created by me.
 
 <div align="center">
