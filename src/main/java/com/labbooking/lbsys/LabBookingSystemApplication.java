@@ -11,4 +11,16 @@ public class LabBookingSystemApplication {
         SpringApplication.run(LabBookingSystemApplication.class, args);
     }
 
+    // Tells Spring Boot to allow traffic from our web browser, don't know how it works but it does.
+    @Bean
+    public WebMvcConfigurer configurer() {
+        return new WebMvcConfigurer() {
+            public void addCorsMapping(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+            }
+        };
+    }
+
 }
