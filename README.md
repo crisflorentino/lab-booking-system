@@ -8,9 +8,9 @@
 
 
 ### Branch Categories
-* **`feature/`**: New functional requirements (e.g., `feature/user-login`).
-* **`bugfix/`**: Fixing a bug or broken logic (e.g., `bugfix/connection-timeout`).
-* **`chore/`**: Maintenance tasks, documentation, or dependency updates (e.g., `chore/update-readme`).
-* **`refactor/`**: Code changes that neither fix a bug nor add a feature (e.g., `refactor/booking-logic`).
+* **`feature/`**: New functional requirements.
+* **`bugfix/`**: Fixing a bug or broken logic.
+* **`chore/`**: Maintenance tasks, documentation, or dependency updates.
+* **`refactor/`**: Code changes that neither fix a bug nor add a feature.
 
 
