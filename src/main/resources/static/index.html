@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab Booking System</title>
     <style>
-        /* Sleek, modern resets */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -17,8 +16,6 @@
             justify-content: center;
             padding: 20px;
         }
-
-        /* The Main Card */
         .container {
             background: #ffffff;
             width: 100%;
@@ -26,86 +23,41 @@
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
         }
-
         h1, h2, h3 { font-weight: 600; margin-bottom: 15px; color: #111; }
         p { color: #666; margin-bottom: 20px; line-height: 1.5; }
         .hidden { display: none !important; }
 
-        /* Buttons */
         button {
-            background-color: #111;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
+            background-color: #111; color: white; border: none; border-radius: 8px;
+            padding: 12px 20px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%;
         }
         button:hover { background-color: #333; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
         button.danger { background-color: #fff; color: #dc3545; border: 1px solid #dc3545; }
         button.danger:hover { background-color: #dc3545; color: #fff; }
         button.small { padding: 8px 12px; font-size: 13px; margin-top: 10px; }
 
-        /* Form Inputs */
-        input[type="datetime-local"] {
+        input[type="text"], input[type="datetime-local"], select {
             width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px;
-            border: 1px solid #ddd; border-radius: 8px; outline: none; font-family: inherit;
+            border: 1px solid #ddd; border-radius: 8px; outline: none; font-family: inherit; font-size: 14px;
         }
-        input:focus { border-color: #111; }
 
-        /* --- LOGIN SECTION STYLING --- */
         #loginSection { max-width: 360px; margin: 0 auto; text-align: center; }
-        #loginSection h1 { font-size: 24px; margin-bottom: 10px; }
+        .input-group { display: flex; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+        .input-group .prefix { background: #f9fafb; padding: 12px 16px; color: #555; font-weight: 600; border-right: 1px solid #ddd; }
+        .input-group input { border: none; padding: 12px; flex: 1; outline: none; font-size: 16px; margin: 0; }
 
-        /* The custom "N" Input Box */
-        .input-group {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            transition: border-color 0.2s;
-        }
-        .input-group:focus-within { border-color: #111; }
-        .input-group .prefix {
-            background: #f9fafb;
-            padding: 12px 16px;
-            color: #555;
-            font-weight: 600;
-            border-right: 1px solid #ddd;
-        }
-        .input-group input {
-            border: none;
-            padding: 12px;
-            flex: 1;
-            outline: none;
-            font-size: 16px;
-        }
-
-        /* --- DASHBOARD STYLING --- */
         .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
         .header-row button { width: auto; }
-
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } } /* Mobile responsive */
-
         .panel { background: #f9fafb; padding: 20px; border-radius: 12px; border: 1px solid #eaeaea; }
-
-        .card {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
+        .card { background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 12px; }
         .status-badge { font-size: 12px; padding: 3px 8px; border-radius: 12px; background: #e0f2fe; color: #0284c7; font-weight: 500; }
+
+        /* Grey out unavailable equipment cards */
+        .card.unavailable { opacity: 0.6; }
+        .card.unavailable .status-badge { background: #fbe0e0; color: #c70202; }
     </style>
 </head>
 <body>
@@ -114,17 +66,15 @@
 
     <div id="loginSection">
         <h1>Welcome Back</h1>
-        <p>Enter your student ID to access the lab.</p>
-
+        <p>Enter your ID to access the system.</p>
         <div class="input-group">
             <span class="prefix">N</span>
             <input type="text" id="userIdInput" placeholder="987654321" autocomplete="off">
         </div>
-        <button onclick="login()">Access Dashboard</button>
+        <button onclick="login()">Login</button>
     </div>
 
-    <div id="dashboardSection" class="hidden">
-
+    <div id="studentDashboard" class="hidden">
         <div class="header-row">
             <div>
                 <h1>University Lab System</h1>
@@ -132,31 +82,53 @@
             </div>
             <button class="danger" onclick="logout()">Logout</button>
         </div>
-
         <div class="dashboard-grid">
-
             <div class="panel">
                 <h3>Reserve Equipment</h3>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="font-size: 14px; font-weight: 500;">Start Time</label>
-                    <input type="datetime-local" id="startTime">
-                    <label style="font-size: 14px; font-weight: 500;">End Time</label>
-                    <input type="datetime-local" id="endTime">
-                </div>
-
-                <div id="equipmentList">
-                </div>
+                <label>Start Time</label> <input type="datetime-local" id="startTime">
+                <label>End Time</label> <input type="datetime-local" id="endTime">
+                <div id="equipmentList"></div>
             </div>
-
             <div class="panel">
                 <h3>My Schedule</h3>
-                <div id="reservationsList">
-                </div>
+                <div id="reservationsList"></div>
             </div>
-
         </div>
     </div>
+
+    <div id="adminDashboard" class="hidden">
+        <div class="header-row">
+            <div>
+                <h1>Admin Control Panel</h1>
+                <p style="margin:0;">Administrator ID: <strong>N<span id="displayAdminId"></span></strong></p>
+            </div>
+            <button class="danger" onclick="logout()">Logout</button>
+        </div>
+        <div class="dashboard-grid">
+            <div class="panel">
+                <h3>System Bookings</h3>
+                <button class="small" onclick="fetchAllBookings()" style="margin-bottom: 15px;">Refresh List</button>
+                <div id="systemBookingsList"></div>
+            </div>
+            <div class="panel">
+                <h3>Inventory Management</h3>
+                <div class="card">
+                    <label>New Equipment Name</label>
+                    <input type="text" id="newEquipName" placeholder="e.g., Oscilloscope">
+
+                    <label>Initial Status</label>
+                    <select id="newEquipStatus">
+                        <option value="AVAILABLE">Available</option>
+                        <option value="MAINTENANCE">Maintenance</option>
+                        <option value="OFFLINE">Offline</option>
+                    </select>
+
+                    <button class="small" onclick="addEquipment()">Add to Inventory</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -164,126 +136,142 @@
     let currentUserId = null;
 
     async function login() {
-        // Grab the raw value and strip out any 'N' or 'n' the user might have accidentally typed
         let rawId = document.getElementById('userIdInput').value.trim();
         const cleanId = rawId.replace(/^N/i, '');
-
         if (!cleanId) return alert("Please enter a valid numeric ID.");
 
         try {
             const response = await fetch(`${API_BASE}/users/${cleanId}`);
             if (!response.ok) throw new Error();
+            const user = await response.json();
 
             currentUserId = cleanId;
-            document.getElementById('displayUserId').innerText = cleanId;
-
             document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('dashboardSection').classList.remove('hidden');
 
-            fetchEquipment();
-            fetchMyReservations();
+            if (user.role === 'ADMIN') {
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                document.getElementById('displayAdminId').innerText = cleanId;
+                fetchAllBookings();
+            } else {
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                document.getElementById('displayUserId').innerText = cleanId;
+                fetchEquipment();
+                fetchMyReservations();
+            }
         } catch (error) {
-            alert("Access Denied: Student ID not found in database.");
+            alert("ID not found in database.");
         }
     }
 
     function logout() {
         currentUserId = null;
-        document.getElementById('loginSection').classList.remove('hidden');
-        document.getElementById('dashboardSection').classList.add('hidden');
         document.getElementById('userIdInput').value = '';
+        document.getElementById('studentDashboard').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.add('hidden');
+        document.getElementById('loginSection').classList.remove('hidden');
     }
 
     async function fetchEquipment() {
         const response = await fetch(`${API_BASE}/equipment`);
-        const equipmentData = await response.json();
+        const data = await response.json();
         const listDiv = document.getElementById('equipmentList');
-        listDiv.innerHTML = '';
+        listDiv.innerHTML = data.length === 0 ? '<p>No equipment.</p>' : '';
+        data.forEach(item => {
+            const isAvailable = item.status === 'AVAILABLE';
+            const disableAttr = isAvailable ? '' : 'disabled';
+            const greyClass = isAvailable ? '' : 'unavailable';
+            const buttonText = isAvailable ? 'Book' : 'Unavailable';
 
-        if(equipmentData.length === 0) {
-            listDiv.innerHTML = '<p style="font-size: 14px;">No equipment available.</p>';
-            return;
-        }
-
-        equipmentData.forEach(item => {
             listDiv.innerHTML += `
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong>${item.name}</strong>
-                        <span class="status-badge">${item.status}</span>
+                <div class="card ${greyClass}">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong>${item.name}</strong> <span class="status-badge">${item.status}</span>
                     </div>
-                    <button class="small" onclick="bookEquipment(${item.id})">Book Selection</button>
-                </div>
-            `;
+                    <button class="small" onclick="bookEquipment(${item.id})" ${disableAttr}>${buttonText}</button>
+                </div>`;
         });
     }
 
     async function bookEquipment(equipmentId) {
         const start = document.getElementById('startTime').value;
         const end = document.getElementById('endTime').value;
+        if (!start || !end) return alert("Select start and end times.");
 
-        if (!start || !end) return alert("Please select your start and end times.");
-
-        const bookingPayload = {
-            user: { id: currentUserId },
-            equipment: { id: equipmentId },
-            startTime: start,
-            endTime: end
-        };
-
-        try {
-            const response = await fetch(`${API_BASE}/bookings`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bookingPayload)
-            });
-
-            if (response.ok) {
-                // Clear the inputs on success
-                document.getElementById('startTime').value = '';
-                document.getElementById('endTime').value = '';
-                fetchMyReservations();
-            } else {
-                const errorData = await response.json();
-                alert(`Conflict: ${errorData.message || 'Time slot already reserved.'}`);
-            }
-        } catch (error) {
-            alert("Server connection error.");
-        }
+        const payload = { user: { id: currentUserId }, equipment: { id: equipmentId }, startTime: start, endTime: end };
+        const response = await fetch(`${API_BASE}/bookings`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (response.ok) fetchMyReservations();
+        else alert("Time slot conflict!");
     }
 
     async function fetchMyReservations() {
         const response = await fetch(`${API_BASE}/bookings/user/${currentUserId}`);
-        const reservations = await response.json();
+        const data = await response.json();
         const listDiv = document.getElementById('reservationsList');
-        listDiv.innerHTML = '';
-
-        if (reservations.length === 0) {
-            listDiv.innerHTML = '<p style="font-size: 14px;">Your schedule is clear.</p>';
-            return;
-        }
-
-        reservations.forEach(booking => {
-            const startStr = new Date(booking.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-            const endStr = new Date(booking.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-
+        listDiv.innerHTML = data.length === 0 ? '<p>No reservations.</p>' : '';
+        data.forEach(b => {
+            const startStr = new Date(b.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+            const endStr = new Date(b.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
             listDiv.innerHTML += `
                 <div class="card">
-                    <strong style="display:block; margin-bottom: 5px;">${booking.equipment.name}</strong>
-                    <div style="font-size: 13px; color: #555;">
+                    <strong>${b.equipment.name}</strong>
+                    <div style="font-size:13px; color:#555; margin-top: 5px;">
                         <div>⏱️ ${startStr}</div>
                         <div>🏁 ${endStr}</div>
                     </div>
-                    <button class="danger small" onclick="cancelBooking(${booking.id})">Cancel</button>
-                </div>
-            `;
+                    <button class="danger small" onclick="cancelBooking(${b.id})">Cancel</button>
+                </div>`;
         });
     }
 
-    async function cancelBooking(bookingId) {
-        if (!confirm("Cancel this reservation?")) return;
-        await fetch(`${API_BASE}/bookings/${bookingId}`, { method: 'DELETE' });
+    async function cancelBooking(id) {
+        if (!confirm("Cancel your reservation?")) return;
+        await fetch(`${API_BASE}/bookings/${id}`, { method: 'DELETE' });
         fetchMyReservations();
+    }
+
+    async function fetchAllBookings() {
+        const response = await fetch(`${API_BASE}/bookings`);
+        const data = await response.json();
+        const listDiv = document.getElementById('systemBookingsList');
+        listDiv.innerHTML = data.length === 0 ? '<p>No active bookings.</p>' : '';
+        data.forEach(b => {
+            const startStr = new Date(b.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+            const endStr = new Date(b.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+            listDiv.innerHTML += `
+                <div class="card">
+                    <strong>${b.equipment.name}</strong>
+                    <div style="font-size: 13px; color: #555; margin-top: 5px;">
+                        <strong>User ID:</strong> N${b.user.id} <br>
+                        <div>⏱️ ${startStr}</div>
+                        <div>🏁 ${endStr}</div>
+                    </div>
+                    <button class="danger small" onclick="cancelSystemBooking(${b.id})">Cancel Booking</button>
+                </div>`;
+        });
+    }
+
+    async function cancelSystemBooking(id) {
+        if (!confirm("Are you sure you want to cancel this student's reservation?")) return;
+        await fetch(`${API_BASE}/bookings/${id}`, { method: 'DELETE' });
+        fetchAllBookings(); // Refresh the admin list
+    }
+
+    async function addEquipment() {
+        const name = document.getElementById('newEquipName').value;
+        const status = document.getElementById('newEquipStatus').value;
+
+        if (!name) return alert("Enter equipment name.");
+        const response = await fetch(`${API_BASE}/equipment`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, status: status })
+        });
+        if (response.ok) {
+            alert(`${name} added to inventory as ${status}!`);
+            document.getElementById('newEquipName').value = '';
+            document.getElementById('newEquipStatus').value = 'AVAILABLE';
+        }
     }
 </script>
 
