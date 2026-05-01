@@ -92,5 +92,9 @@ public class BookingService {
         bRepo.deleteById(id);
     }
 
+    public List<Booking> getAllBookings() {
+        return bRepo.findAll();
+    }
+
 
 }

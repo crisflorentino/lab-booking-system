@@ -39,8 +39,9 @@ public class LabBookingSystemApplication {
     public CommandLineRunner seedDatabase(UserRepository userRepository, EquipmentRepository equipmentRepository) {
         return args -> {
             if (userRepository.count() == 0) {
-                userRepository.save(new User(987654321L, Role.USER));
-                userRepository.save(new User(111222333L, Role.USER));
+                userRepository.save(new User(111111111L, Role.USER));
+                userRepository.save(new User(222222222L, Role.USER));
+                userRepository.save(new User(333333333L, Role.ADMIN));
             }
 
             if (equipmentRepository.count() == 0) {
