@@ -35,4 +35,9 @@ public class BookingController {
         bookingService.cancelBooking(id);
     }
 
+    @GetMapping
+    public List<Booking> getAllBookings() {
+        return bookingService.getAllBookings();
+    }
+
 }
