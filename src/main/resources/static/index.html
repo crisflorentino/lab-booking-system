@@ -22,11 +22,10 @@
         .container {
             background: #ffffff;
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
         }
 
         h1, h2, h3 { font-weight: 600; margin-bottom: 15px; color: #111; }
@@ -49,73 +48,88 @@
         button:hover { background-color: #333; }
         button.danger { background-color: #fff; color: #dc3545; border: 1px solid #dc3545; }
         button.danger:hover { background-color: #dc3545; color: #fff; }
+        button.success { background-color: #fff; color: #16a34a; border: 1px solid #16a34a; }
+        button.success:hover { background-color: #16a34a; color: #fff; }
         button.small { padding: 8px 12px; font-size: 13px; margin-top: 10px; }
 
-        /* Form Inputs */
-        input[type="datetime-local"] {
+        /* Inputs */
+        input[type="datetime-local"], input[type="text"], select {
             width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px;
-            border: 1px solid #ddd; border-radius: 8px; outline: none; font-family: inherit;
+            border: 1px solid #ddd; border-radius: 8px; outline: none;
+            font-family: inherit; font-size: 14px; background: #fff;
         }
-        input:focus { border-color: #111; }
+        input:focus, select:focus { border-color: #111; }
 
-        /* --- LOGIN SECTION STYLING --- */
+        /* Login */
         #loginSection { max-width: 360px; margin: 0 auto; text-align: center; }
         #loginSection h1 { font-size: 24px; margin-bottom: 10px; }
 
-        /* The custom "N" Input Box */
         .input-group {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            transition: border-color 0.2s;
+            display: flex; align-items: center;
+            border: 1px solid #ddd; border-radius: 8px;
+            overflow: hidden; margin-bottom: 20px; transition: border-color 0.2s;
         }
         .input-group:focus-within { border-color: #111; }
         .input-group .prefix {
-            background: #f9fafb;
-            padding: 12px 16px;
-            color: #555;
-            font-weight: 600;
-            border-right: 1px solid #ddd;
+            background: #f9fafb; padding: 12px 16px;
+            color: #555; font-weight: 600; border-right: 1px solid #ddd;
         }
         .input-group input {
-            border: none;
-            padding: 12px;
-            flex: 1;
-            outline: none;
-            font-size: 16px;
+            border: none; padding: 12px; flex: 1;
+            outline: none; font-size: 16px; margin: 0;
         }
 
-        /* --- DASHBOARD STYLING --- */
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        /* Shared header */
+        .header-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;
+        }
         .header-row button { width: auto; }
 
+        /* Grids */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } } /* Mobile responsive */
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        @media (max-width: 768px) {
+            .dashboard-grid, .admin-grid { grid-template-columns: 1fr; }
+        }
 
         .panel { background: #f9fafb; padding: 20px; border-radius: 12px; border: 1px solid #eaeaea; }
 
         .card {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            margin-bottom: 12px;
+            background: #ffffff; padding: 15px; border-radius: 8px;
+            border: 1px solid #eee; margin-bottom: 12px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .status-badge { font-size: 12px; padding: 3px 8px; border-radius: 12px; background: #e0f2fe; color: #0284c7; font-weight: 500; }
+
+        /* Status badges */
+        .status-badge {
+            font-size: 12px; padding: 3px 8px; border-radius: 12px;
+            font-weight: 500; display: inline-block;
+        }
+        .status-badge.AVAILABLE   { background: #dcfce7; color: #16a34a; }
+        .status-badge.MAINTENANCE { background: #fef9c3; color: #ca8a04; }
+        .status-badge.OFFLINE     { background: #fee2e2; color: #dc2626; }
+
+        /* Status editor row */
+        .status-row {
+            display: flex; align-items: center; gap: 8px; margin-top: 10px;
+        }
+        .status-row select { margin: 0; flex: 1; padding: 7px 10px; font-size: 13px; }
+        .status-row button { width: auto; padding: 7px 12px; font-size: 13px; }
+
+        .section-label {
+            font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+            text-transform: uppercase; color: #999; margin-bottom: 16px;
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
 
+    <!-- ===== LOGIN ===== -->
     <div id="loginSection">
         <h1>Welcome Back</h1>
         <p>Enter your student ID to access the lab.</p>
-
         <div class="input-group">
             <span class="prefix">N</span>
             <input type="text" id="userIdInput" placeholder="987654321" autocomplete="off">
@@ -123,8 +137,8 @@
         <button onclick="login()">Access Dashboard</button>
     </div>
 
+    <!-- ===== STUDENT DASHBOARD ===== -->
     <div id="dashboardSection" class="hidden">
-
         <div class="header-row">
             <div>
                 <h1>University Lab System</h1>
@@ -132,114 +146,154 @@
             </div>
             <button class="danger" onclick="logout()">Logout</button>
         </div>
-
         <div class="dashboard-grid">
-
             <div class="panel">
                 <h3>Reserve Equipment</h3>
-
                 <div style="margin-bottom: 20px;">
                     <label style="font-size: 14px; font-weight: 500;">Start Time</label>
                     <input type="datetime-local" id="startTime">
                     <label style="font-size: 14px; font-weight: 500;">End Time</label>
                     <input type="datetime-local" id="endTime">
                 </div>
-
-                <div id="equipmentList">
-                </div>
+                <div id="equipmentList"></div>
             </div>
-
             <div class="panel">
                 <h3>My Schedule</h3>
-                <div id="reservationsList">
-                </div>
+                <div id="reservationsList"></div>
             </div>
-
         </div>
     </div>
+
+    <!-- ===== ADMIN DASHBOARD ===== -->
+    <div id="adminSection" class="hidden">
+        <div class="header-row">
+            <div>
+                <h1>Admin Control Panel</h1>
+                <p style="margin:0;">Administrator ID: <strong>N<span id="displayAdminId"></span></strong></p>
+            </div>
+            <button class="danger" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Top row -->
+        <div class="admin-grid">
+            <div class="panel">
+                <h3>System Bookings</h3>
+                <button onclick="fetchAllBookings()">Refresh List</button>
+                <div id="allBookingsList" style="margin-top:15px;"></div>
+            </div>
+            <div class="panel">
+                <h3>Inventory Management</h3>
+                <label style="font-size:14px; font-weight:500;">New Equipment Name</label>
+                <input type="text" id="newEquipmentName" placeholder="e.g., Oscilloscope">
+                <label style="font-size:14px; font-weight:500;">Initial Status</label>
+                <select id="newEquipmentStatus">
+                    <option value="AVAILABLE">Available</option>
+                    <option value="MAINTENANCE">Maintenance</option>
+                    <option value="OFFLINE">Offline</option>
+                </select>
+                <button onclick="addEquipment()">Add to Inventory</button>
+            </div>
+        </div>
+
+        <!-- Full-width equipment status editor -->
+        <div class="panel">
+            <h3>Equipment Status</h3>
+            <p class="section-label">Update the status of existing equipment</p>
+            <div id="adminEquipmentList"></div>
+        </div>
+    </div>
+
 </div>
 
 <script>
     const API_BASE = 'http://localhost:8080/api';
     let currentUserId = null;
 
+    // ── LOGIN ──────────────────────────────────────────────
     async function login() {
         // Grab the raw value and strip out any 'N' or 'n' the user might have accidentally typed
         let rawId = document.getElementById('userIdInput').value.trim();
         const cleanId = rawId.replace(/^N/i, '');
-
         if (!cleanId) return alert("Please enter a valid numeric ID.");
 
         try {
             const response = await fetch(`${API_BASE}/users/${cleanId}`);
             if (!response.ok) throw new Error();
 
+            const userData = await response.json();
+            if (!userData) throw new Error();
+
             currentUserId = cleanId;
-            document.getElementById('displayUserId').innerText = cleanId;
-
             document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('dashboardSection').classList.remove('hidden');
 
-            fetchEquipment();
-            fetchMyReservations();
+            if (userData.role === 'ADMIN') {
+                document.getElementById('displayAdminId').innerText = cleanId;
+                document.getElementById('adminSection').classList.remove('hidden');
+                fetchAllBookings();
+                fetchAdminEquipment();
+            } else {
+                document.getElementById('displayUserId').innerText = cleanId;
+                document.getElementById('dashboardSection').classList.remove('hidden');
+                fetchEquipment();
+                fetchMyReservations();
+            }
         } catch (error) {
             alert("Access Denied: Student ID not found in database.");
         }
     }
 
+    // ── LOGOUT ─────────────────────────────────────────────
     function logout() {
         currentUserId = null;
         document.getElementById('loginSection').classList.remove('hidden');
         document.getElementById('dashboardSection').classList.add('hidden');
+        document.getElementById('adminSection').classList.add('hidden');
         document.getElementById('userIdInput').value = '';
     }
 
+    // ── STUDENT: Equipment list ────────────────────────────
     async function fetchEquipment() {
         const response = await fetch(`${API_BASE}/equipment`);
         const equipmentData = await response.json();
         const listDiv = document.getElementById('equipmentList');
         listDiv.innerHTML = '';
 
-        if(equipmentData.length === 0) {
-            listDiv.innerHTML = '<p style="font-size: 14px;">No equipment available.</p>';
+        if (equipmentData.length === 0) {
+            listDiv.innerHTML = '<p style="font-size:14px;">No equipment available.</p>';
             return;
         }
 
         equipmentData.forEach(item => {
             listDiv.innerHTML += `
                 <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
                         <strong>${item.name}</strong>
-                        <span class="status-badge">${item.status}</span>
+                        <span class="status-badge ${item.status}">${item.status}</span>
                     </div>
                     <button class="small" onclick="bookEquipment(${item.id})">Book Selection</button>
-                </div>
-            `;
+                </div>`;
         });
     }
 
+    // ── STUDENT: Book equipment ────────────────────────────
     async function bookEquipment(equipmentId) {
         const start = document.getElementById('startTime').value;
-        const end = document.getElementById('endTime').value;
-
+        const end   = document.getElementById('endTime').value;
         if (!start || !end) return alert("Please select your start and end times.");
-
-        const bookingPayload = {
-            user: { id: currentUserId },
-            equipment: { id: equipmentId },
-            startTime: start,
-            endTime: end
-        };
 
         try {
             const response = await fetch(`${API_BASE}/bookings`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bookingPayload)
+                body: JSON.stringify({
+                    user: { id: currentUserId },
+                    equipment: { id: equipmentId },
+                    startTime: start,
+                    endTime: end
+                })
             });
 
             if (response.ok) {
-                // Clear the inputs on success
                 document.getElementById('startTime').value = '';
                 document.getElementById('endTime').value = '';
                 fetchMyReservations();
@@ -252,6 +306,7 @@
         }
     }
 
+    // ── STUDENT: My reservations ───────────────────────────
     async function fetchMyReservations() {
         const response = await fetch(`${API_BASE}/bookings/user/${currentUserId}`);
         const reservations = await response.json();
@@ -259,33 +314,155 @@
         listDiv.innerHTML = '';
 
         if (reservations.length === 0) {
-            listDiv.innerHTML = '<p style="font-size: 14px;">Your schedule is clear.</p>';
+            listDiv.innerHTML = '<p style="font-size:14px;">Your schedule is clear.</p>';
             return;
         }
 
         reservations.forEach(booking => {
             const startStr = new Date(booking.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-            const endStr = new Date(booking.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-
+            const endStr   = new Date(booking.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
             listDiv.innerHTML += `
                 <div class="card">
-                    <strong style="display:block; margin-bottom: 5px;">${booking.equipment.name}</strong>
-                    <div style="font-size: 13px; color: #555;">
+                    <strong style="display:block; margin-bottom:5px;">${booking.equipment.name}</strong>
+                    <div style="font-size:13px; color:#555;">
                         <div>⏱️ ${startStr}</div>
                         <div>🏁 ${endStr}</div>
                     </div>
                     <button class="danger small" onclick="cancelBooking(${booking.id})">Cancel</button>
-                </div>
-            `;
+                </div>`;
         });
     }
 
+    // ── STUDENT: Cancel booking ────────────────────────────
     async function cancelBooking(bookingId) {
         if (!confirm("Cancel this reservation?")) return;
         await fetch(`${API_BASE}/bookings/${bookingId}`, { method: 'DELETE' });
         fetchMyReservations();
     }
-</script>
 
+    // ── ADMIN: All bookings ────────────────────────────────
+    async function fetchAllBookings() {
+        try {
+            const response = await fetch(`${API_BASE}/bookings`);
+            const bookings = await response.json();
+            const listDiv = document.getElementById('allBookingsList');
+            listDiv.innerHTML = '';
+
+            if (bookings.length === 0) {
+                listDiv.innerHTML = '<p style="font-size:14px;">No active bookings.</p>';
+                return;
+            }
+
+            bookings.forEach(booking => {
+                const startStr = new Date(booking.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+                const endStr   = new Date(booking.endTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+                listDiv.innerHTML += `
+                    <div class="card">
+                        <strong style="display:block; margin-bottom:4px;">${booking.equipment.name}</strong>
+                        <div style="font-size:12px; color:#777; margin-bottom:4px;">User ID: N${booking.user.id}</div>
+                        <div style="font-size:13px; color:#555;">
+                            <div>⏱️ ${startStr}</div>
+                            <div>🏁 ${endStr}</div>
+                        </div>
+                        <button class="danger small" onclick="adminCancelBooking(${booking.id})">Cancel Booking</button>
+                    </div>`;
+            });
+        } catch (e) {
+            document.getElementById('allBookingsList').innerHTML = '<p style="font-size:14px;">Could not load bookings.</p>';
+        }
+    }
+
+    // ── ADMIN: Cancel any booking ──────────────────────────
+    async function adminCancelBooking(bookingId) {
+        if (!confirm("Cancel this booking?")) return;
+        await fetch(`${API_BASE}/bookings/${bookingId}`, { method: 'DELETE' });
+        fetchAllBookings();
+    }
+
+    // ── ADMIN: Add equipment ───────────────────────────────
+    async function addEquipment() {
+        const name   = document.getElementById('newEquipmentName').value.trim();
+        const status = document.getElementById('newEquipmentStatus').value;
+        if (!name) return alert("Please enter an equipment name.");
+
+        try {
+            const response = await fetch(`${API_BASE}/equipment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, status })
+            });
+
+            if (response.ok) {
+                document.getElementById('newEquipmentName').value = '';
+                document.getElementById('newEquipmentStatus').value = 'AVAILABLE';
+                fetchAdminEquipment();
+            } else {
+                alert("Failed to add equipment.");
+            }
+        } catch (e) {
+            alert("Server connection error.");
+        }
+    }
+
+    // ── ADMIN: Equipment status list ───────────────────────
+    async function fetchAdminEquipment() {
+        const response = await fetch(`${API_BASE}/equipment`);
+        const equipmentData = await response.json();
+        const listDiv = document.getElementById('adminEquipmentList');
+        listDiv.innerHTML = '';
+
+        if (equipmentData.length === 0) {
+            listDiv.innerHTML = '<p style="font-size:14px;">No equipment in inventory.</p>';
+            return;
+        }
+
+        equipmentData.forEach(item => {
+            listDiv.innerHTML += `
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>${item.name}</strong>
+                        <span class="status-badge ${item.status}" id="badge-${item.id}">${item.status}</span>
+                    </div>
+                    <div class="status-row">
+                        <select id="status-select-${item.id}">
+                            <option value="AVAILABLE"   ${item.status === 'AVAILABLE'   ? 'selected' : ''}>Available</option>
+                            <option value="MAINTENANCE" ${item.status === 'MAINTENANCE' ? 'selected' : ''}>Maintenance</option>
+                            <option value="OFFLINE"     ${item.status === 'OFFLINE'     ? 'selected' : ''}>Offline</option>
+                        </select>
+                        <button class="success" onclick="updateEquipmentStatus(${item.id})">Update</button>
+                        <button class="danger"  onclick="deleteEquipment(${item.id})">Delete</button>
+                    </div>
+                </div>`;
+        });
+    }
+
+    // ── ADMIN: Update equipment status ─────────────────────
+    async function updateEquipmentStatus(equipmentId) {
+        const newStatus = document.getElementById(`status-select-${equipmentId}`).value;
+
+        try {
+            const response = await fetch(`${API_BASE}/equipment/${equipmentId}/status?newStatus=${newStatus}`, {
+                method: 'PUT'
+            });
+
+            if (response.ok) {
+                const badge = document.getElementById(`badge-${equipmentId}`);
+                badge.className = `status-badge ${newStatus}`;
+                badge.innerText = newStatus;
+            } else {
+                alert("Failed to update status.");
+            }
+        } catch (e) {
+            alert("Server connection error.");
+        }
+    }
+
+    // ── ADMIN: Delete equipment ────────────────────────────
+    async function deleteEquipment(equipmentId) {
+        if (!confirm("Delete this equipment from inventory?")) return;
+        await fetch(`${API_BASE}/equipment/${equipmentId}`, { method: 'DELETE' });
+        fetchAdminEquipment();
+    }
+</script>
 </body>
 </html>
